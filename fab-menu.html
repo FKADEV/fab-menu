@@ -1,0 +1,135 @@
+<link rel="import" href="fab-menu-item.html">
+<dom-module id="fab-menu">
+    <template>
+        <style>
+            .menu-container {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                position: absolute;
+                bottom: 0;
+                right: 0;
+            }
+
+            .menu {
+                margin-right: 8px;
+                display: flex;
+                align-items: flex-end;
+                flex-direction: row !important;
+            }
+
+            .labels {
+                line-height: 56px;
+                display: flex;
+                text-align: right;
+                margin-right: 1em;
+                flex-direction: column;
+                font-family: sans-serif;
+            }
+
+            .menu ::content [mini] {
+                margin: 8px 0px 8px 0px;
+            }
+
+            .menu-container ::content [trigger] {
+                margin-top: 10px;
+            }
+
+            #fam ::content fab-menu-item {
+                transition: all 0.5s ease;
+                transform: scale(1);
+                -moz-transform: scale(1);
+                -webkit-transform: scale(1);
+            }
+
+            #fam:not(.fam-visible) ::content fab-menu-item {
+                transition: all 0.5s ease;
+                transform: scale(0);
+                -moz-transform: scale(0);
+                -webkit-transform: scale(0);
+            }
+
+            #trigger {
+                transition: transform 0.5s;
+                will-change: transform;
+            }
+
+            #trigger[activate] {
+                transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -webkit-transform: rotate(360deg);
+            }
+        </style>
+
+        <div class="menu-container">
+            <div id="fam" class="layout vertical">
+                <content id="content" select="fab-menu-item"></content>
+            </div>
+            <paper-fab id="trigger" icon="menu"></paper-fab>
+            <content></content>
+        </div>
+
+    </template>
+
+    <script>
+
+        Polymer({
+            is: "fab-menu",
+            properties: {
+                visible: {
+                    type: Boolean,
+                    value: false
+                },
+                duration: {
+                    type: Number,
+                    value: 0.3
+                }
+            },
+            ready: function () {
+                this._transitionDelay(false);
+            },
+            _transitionDelay: function (show) {
+                var nodes = Polymer.dom(this.$.content).getDistributedNodes();
+                var length = nodes.length;
+                var duration = parseFloat(this.duration);
+                var delta = this.duration / length;
+               
+                for (var index = 1 ; index <= length ; index++) {
+                    var factor = delta * index;
+                    if (!show) {
+                        nodes[index - 1].style.transitionDelay = factor + "s";
+                    } else {
+                        nodes[index - 1].style.transitionDelay = duration - factor + "s";
+                    }
+                }
+            },
+            listeners: {
+                'fam.tap': 'hide',
+                'trigger.tap': 'toggle'
+            },
+            toggle: function () {
+                this.visible = !this.visible;
+                this._transitionDelay(this.visible);
+                this.toggleClass("fam-visible", this.visible, this.$.fam);
+                this.updateTrigger();
+            },
+            hide: function () {
+                this._transitionDelay(false);
+                this.visible = false;
+                this.toggleClass("fam-visible", this.visible, this.$.fam);
+                this.updateTrigger();
+            },
+            updateTrigger: function () {
+                if (this.visible) {
+                    this.$.trigger.setAttribute("activate", "");
+                    this.$.trigger.icon = "close";
+                }
+                else {
+                    this.$.trigger.removeAttribute("activate");
+                    this.$.trigger.icon = "menu";
+                }
+            }
+        });
+    </script>
+
+</dom-module>
