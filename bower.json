@@ -1,0 +1,40 @@
+{
+  "name": "fka-fab-menu",
+  "version": "1.0.1",
+  "description": "An simpe fab menu",
+  "keywords": [
+    "web-components",
+    "polymer",
+    "fab",
+    "menu"
+  ],
+  "authors": [
+    "Ronny Solheim"
+  ],
+  "keywords": [
+    "web-components",
+    "web-component",
+    "polymer",
+    "fab",
+    "menu"
+  ],
+  "main": [
+    "fab-menu.html"
+  ],
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/FKADEV/fab-menu/fab-menu.git"
+  },
+
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0"
+  },
+  "devDependencies": {
+    "web-component-tester": "*",
+    "webcomponentsjs": "^0.7.0",
+    "paper-button": "PolymerElements/iron-icons#^1.0.0",
+    "paper-styles": "PolymerElements/paper-fab#^1.0.0"
+  }
+}
