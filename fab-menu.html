@@ -1,4 +1,4 @@
-<link rel="import" href="fab-menu-item.html">
+﻿<link rel="import" href="fab-menu-item.html">
 <dom-module id="fab-menu">
     <template>
         <style>
@@ -6,13 +6,14 @@
                 display: flex;
                 flex-direction: column;
                 align-items: flex-end;
-                position: absolute;
-                bottom: 0;
-                right: 0;
+                position: fixed;
+                bottom: 12px;
+                right: 12px;
+               
             }
 
             .menu {
-                margin-right: 8px;
+                margin-right: 35px;
                 display: flex;
                 align-items: flex-end;
                 flex-direction: row !important;
@@ -50,7 +51,7 @@
             }
 
             #trigger {
-                transition: transform 0.5s;
+                transition: transform 0.3s;
                 will-change: transform;
             }
 
@@ -82,7 +83,7 @@
                 },
                 duration: {
                     type: Number,
-                    value: 0.3
+                    value: 0.2
                 }
             },
             ready: function () {
