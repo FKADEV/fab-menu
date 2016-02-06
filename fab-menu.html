@@ -2,12 +2,17 @@
 <dom-module id="fab-menu">
     <template>
         <style>
-            .menu-container[direction=down] {
-                top: 0;
+            .menu-container[direction="down"] {
+                top: 20px;
+                margin-top: 10px;
             }
 
-            .menu-container[direction=up] {
+            .menu-container[direction="up"] {
                 bottom: 0;
+            }
+
+            #trigger1 {
+                margin-top: 3px;
             }
 
             .menu-container {
@@ -17,7 +22,8 @@
                 align-items: flex-end;
                 position: absolute;
                 right: 0;
-                height: 56px;
+                overflow: visible;
+
             }
 
 
@@ -108,7 +114,20 @@
                 var length = nodes.length;
                 var duration = parseFloat(this.duration);
                 var delta = this.duration / length;
-                //TO-DO : Reverse on down direction
+                
+                if (this.direction == "down")
+                {
+                    var j = 1;
+                    for (var index = length; index >= 1; index--) {
+                        var factor = delta * j;
+                        if (!show) {
+                            nodes[index - 1].style.transitionDelay = factor + "s";
+                        } else {
+                            nodes[index - 1].style.transitionDelay = duration - factor + "s";
+                        }
+                        j++
+                    }
+                } else {
                 for (var index = 1 ; index <= length ; index++) {
                     var factor = delta * index;
                     if (!show) {
@@ -116,6 +135,7 @@
                     } else {
                         nodes[index - 1].style.transitionDelay = duration - factor + "s";
                     }
+                }
                 }
             },
             listeners: {
