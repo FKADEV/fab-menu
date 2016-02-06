@@ -2,18 +2,27 @@
 <dom-module id="fab-menu">
     <template>
         <style>
+            .menu-container[direction=down] {
+                top: 0;
+            }
+
+            .menu-container[direction=up] {
+                bottom: 0;
+            }
+
             .menu-container {
+                z-index: 9998;
                 display: flex;
                 flex-direction: column;
                 align-items: flex-end;
-                position: fixed;
-                bottom: 12px;
-                right: 12px;
-               
+                position: absolute;
+                right: 0;
+                height: 56px;
             }
 
+
             .menu {
-                margin-right: 35px;
+                margin-right: 8px;
                 display: flex;
                 align-items: flex-end;
                 flex-direction: row !important;
@@ -50,28 +59,26 @@
                 -webkit-transform: scale(0);
             }
 
-            #trigger {
-                transition: transform 0.3s;
+            #trigger1, #trigger2 {
+                transition: transform 0.5s;
                 will-change: transform;
             }
 
-            #trigger[activate] {
-                transform: rotate(360deg);
-                -moz-transform: rotate(360deg);
-                -webkit-transform: rotate(360deg);
-            }
+                #trigger1[activate], #trigger2[activate] {
+                    transform: rotate(360deg);
+                    -moz-transform: rotate(360deg);
+                    -webkit-transform: rotate(360deg);
+                }
         </style>
-
         <div class="menu-container">
+            <paper-fab id="trigger1" icon="menu" hidden$="{{!down(direction)}}"></paper-fab>
             <div id="fam" class="layout vertical">
                 <content id="content" select="fab-menu-item"></content>
             </div>
-            <paper-fab id="trigger" icon="menu"></paper-fab>
+            <paper-fab id="trigger2" icon="menu" hidden$="{{down(direction)}}"></paper-fab>
             <content></content>
         </div>
-
     </template>
-
     <script>
 
         Polymer({
@@ -83,18 +90,25 @@
                 },
                 duration: {
                     type: Number,
-                    value: 0.2
+                    value: 0.3
+                },
+                direction: {
+                    type: String,
+                    value: "up"
                 }
             },
             ready: function () {
                 this._transitionDelay(false);
+            },
+            down: function (d) {
+                return (d === "down");
             },
             _transitionDelay: function (show) {
                 var nodes = Polymer.dom(this.$.content).getDistributedNodes();
                 var length = nodes.length;
                 var duration = parseFloat(this.duration);
                 var delta = this.duration / length;
-               
+                //TO-DO : Reverse on down direction
                 for (var index = 1 ; index <= length ; index++) {
                     var factor = delta * index;
                     if (!show) {
@@ -106,7 +120,8 @@
             },
             listeners: {
                 'fam.tap': 'hide',
-                'trigger.tap': 'toggle'
+                'trigger1.tap': 'toggle',
+                'trigger2.tap': 'toggle'
             },
             toggle: function () {
                 this.visible = !this.visible;
@@ -122,15 +137,20 @@
             },
             updateTrigger: function () {
                 if (this.visible) {
-                    this.$.trigger.setAttribute("activate", "");
-                    this.$.trigger.icon = "close";
+                    this.$.trigger1.setAttribute("activate", "");
+                    this.$.trigger1.icon = "close";
+
+                    this.$.trigger2.setAttribute("activate", "");
+                    this.$.trigger2.icon = "close";
                 }
                 else {
-                    this.$.trigger.removeAttribute("activate");
-                    this.$.trigger.icon = "menu";
+                    this.$.trigger1.removeAttribute("activate");
+                    this.$.trigger1.icon = "menu";
+
+                    this.$.trigger2.removeAttribute("activate");
+                    this.$.trigger2.icon = "menu";
                 }
             }
         });
     </script>
-
 </dom-module>
