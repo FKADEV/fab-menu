@@ -1,21 +1,22 @@
-﻿<dom-module id="fab-menu-item">
+<dom-module id="fab-menu-item">
     <template>
         <style>
             :host {
-                margin: 5px 10px;
+                margin: 5px 5px;
             }
 
-            paper-fab{
+            paper-fab {
                 background-color: var(--backcolor, --accent-color);
             }
+
             .arrow_box {
                 position: relative;
                 background-color: var(--backcolor, --accent-color);
-                text-align:left;
+                text-align: left;
                 margin-bottom: 10px;
                 margin-top: 10px;
                 padding-right: 30px;
-                padding-left:4px;
+                padding-left: 4px;
                 right: -15px;
                 border-radius: 5px;
             }
@@ -34,15 +35,24 @@
                 border-width: 5px;
                 margin-top: -5px;
             }*/
+
+            a, a:visited, a:hover, a:focus, a:active {
+                color: inherit;
+                text-decoration: none;
+            }
         </style>
-        <div class="layout horizontal  end-justified">
-            <div class="arrow_box flex">
-                <content></content>
+        <a href="[[href]]">
+            <div class="layout horizontal  end-justified">
+
+                <div class="arrow_box flex">
+                    <content></content>
+                </div>
+                <div>
+                    <paper-fab icon="{{icon}}" mini></paper-fab>
+                </div>
+
             </div>
-            <div>
-                <paper-fab icon="{{icon}}" mini></paper-fab>
-            </div>
-        </div>
+        </a>
     </template>
     <script>
         Polymer({
@@ -60,6 +70,10 @@
                     type: String,
                     value: '',
                     observer: 'setBackcolor'
+                },
+                href: {
+                    type: String,
+                    value: "#"
                 }
             },
             setBackcolor: function (v, o) {
